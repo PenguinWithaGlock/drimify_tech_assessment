@@ -15,7 +15,7 @@ final class TaskController extends AbstractController
     #[Route('/task', name: 'list_tasks', methods: ['GET'])]
     public function list(TaskRepository $taskRepo): JsonResponse
     {
-        $tasks = $taskRepo->findBy(['deleted_at' => null]);
+        $tasks = $taskRepo->findBy(['deletedAt' => null]);
         $data = [];
 
         foreach ($tasks as $task) {
@@ -42,30 +42,26 @@ final class TaskController extends AbstractController
         $em->persist($task); 
         $em->flush(); 
 
-        return new JsonResponse(['message' => 'Task created successfully!'], 201);
+        return new JsonResponse(['message' => 'Task created successfully!']);
     }
 
     #[Route('/tasks/{id}/toggle', name: 'toggle_done_task', methods: ['POST'])]
     public function toggleDone(Task $task, EntityManagerInterface $em): JsonResponse
     {
         $task->setIsDone(!$task->getIsDone());
-        $task->setUpdatedAt(new \DateTimeImmutable());
+        $task->setUpdatedAt(new \DateTime());
         $em->flush();
 
-        return new JsonResponse([
-            'message' => 'Toggled task status',
-        ]);
+        return new JsonResponse(['message' => 'Toggled task status',]);
     }
 
-    #[Route('/tasks/{id}/delete', name: 'toggle_done_task', methods: ['POST'])]
+    #[Route('/tasks/{id}/delete', name: 'delete_task', methods: ['POST'])]
     public function toggleDelete(Task $task, EntityManagerInterface $em): JsonResponse
     {
-        $task->setDeletedAt(new \DateTimeImmutable());
-        $task->setUpdatedAt(new \DateTimeImmutable());
+        $task->setDeletedAt(new \DateTime());
+        $task->setUpdatedAt(new \DateTime());
         $em->flush();
 
-        return new JsonResponse([
-            'message' => 'Task deleted successfully',
-        ]);
+        return new JsonResponse(['message' => 'Task deleted successfully',]);
     }
 }

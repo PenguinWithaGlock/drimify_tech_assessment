@@ -14,26 +14,32 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title;
+    private string $title;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $is_done;
+    private bool $isDone = false;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at;
+    private ?\DateTime $createdAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at;
+    #[ORM\Column(
+        type: 'datetime',
+        options: [
+            'default' => 'CURRENT_TIMESTAMP',
+            'onUpdate' => 'CURRENT_TIMESTAMP'
+        ]
+    )]
+    private ?\DateTime $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deleted_at;
+    private ?\DateTime $deletedAt = null;
 
     public function __construct()
     {
-        $this->is_done = false;
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
-        $this->deleted_at = null;
+        $this->isDone = false;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+        $this->deletedAt = null;
     }
 
     public function getId(): ?int
@@ -55,48 +61,48 @@ class Task
 
     public function getIsDone(): ?bool
     {
-        return $this->is_done;
+        return $this->isDone;
     }
 
     public function setIsDone(?bool $is_done): static
     {
-        $this->is_done = $is_done;
+        $this->isDone = $is_done;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTime $created_at): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(\DateTime $updated_at): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updated_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    public function getDeletedAt(): ?\DateTime
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deleted_at): static
+    public function setDeletedAt(?\DateTime $deleted_at): static
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deleted_at;
 
         return $this;
     }
