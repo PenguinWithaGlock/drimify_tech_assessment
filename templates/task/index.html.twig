@@ -1,14 +1,45 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">📝 Task Tracker</h1>
+        </div>
 
-{% block title %}Hello TaskController!{% endblock %}
+        <form method="POST" action="/tasks" class="flex mb-6">
+            <input name="title"
+                   placeholder="New task..."
+                   class="flex-grow border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                   required>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition">
+                Add
+            </button>
+        </form>
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>{{ data }}</h1>
-</div>
-{% endblock %}
+        <ul class="space-y-3">
+            {% for task in tasks %}
+                <li class="flex justify-between items-center bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-3">
+                    <span class="{{ task.isDone ? 'line-through text-gray-400' : 'text-gray-100 dark:text-white' }}">
+                        {{ task.title }}
+                    </span>
+                    <div class="flex space-x-2">
+                        <form method="POST" action="/tasks/{{ task.id }}/toggle">
+                            <button class="text-green-500 hover:text-green-700" title="Toggle">✔</button>
+                        </form>
+                        <form method="POST" action="/tasks/{{ task.id }}/delete">
+                            <button class="text-red-500 hover:text-red-700" title="Delete">🗑</button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+                <li class="text-center text-gray-400">No tasks yet. Add one above.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
