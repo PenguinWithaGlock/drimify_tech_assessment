@@ -17,16 +17,24 @@ class Task
     private ?string $title;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $is_done = false;
+    private ?bool $is_done;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $created_at;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updated_at;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deleted_at = null;
+    private ?\DateTimeImmutable $deleted_at;
+
+    public function __construct()
+    {
+        $this->is_done = false;
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+        $this->deleted_at = null;
+    }
 
     public function getId(): ?int
     {
@@ -45,7 +53,7 @@ class Task
         return $this;
     }
 
-    public function isDone(): ?bool
+    public function getIsDone(): ?bool
     {
         return $this->is_done;
     }
@@ -86,16 +94,10 @@ class Task
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTime $deleted_at): static
+    public function setDeletedAt(?\DateTimeImmutable $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
     }
 }
